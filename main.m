@@ -272,4 +272,4 @@ grid on;
 
 
 %% Plot The Estimated State vs. Ground Truth 
-visualize_estimations(T_estimated, T_true, L_estimated, L_true, NumberOfSharedPoints);
+visualize_estimations(T_estimated, T_true, L_estimated, L_true);
