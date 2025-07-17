@@ -12,9 +12,9 @@ addpath('Functions\modelsAndJacobians');
 
 rng('default')
 
-NumberOfSharedPoints = 2; % Number of landmarks shared between the 
+NumberOfSharedPoints = 3; % Number of landmarks shared between the 
 % state/measurement Poses/Frames. (Must be at minimum 3!, since we don't 
-% have a motion prior or vehicle input)
+% have a motion prior or odometry input)
 
 K = 10; % # of Free Poses/Frames
 M = K*NumberOfSharedPoints; % # of Landmarks
@@ -29,28 +29,15 @@ stateSize = K*6+M*3;
 N = 1e2; % Max # of Iterations, was 1e6 (Should be set high if using line 
 % search)
 i = 1;
-% epsilon = 1e-11; % Convergence Criteria, Not used
 upper_limit = 60; % Limit for Divergent Solutions (translation error (m))
 
-% % Set the random seed for reproducibility
-% seed = randi(1000); 
-% % seed = 613; 
-% rng(seed);
-
 % Measurement Noise parameters 
-% noise_std_ImagePix = 1; % Pixels are increased by integers
-% noise_std_Disparity = 0.3; % 
-
 % Create noise parameters to create noisy measurements
-% SNR value (54 dB)
-SNR_dB = 54;
-% Signal means (adjust these based on your expected values)
-mu_ImagePix = 0;%800;  % __Mid-point of 8-bit grayscale
-mu_Disparity = 0;%10;  % Example disparity value
-% Calculate standard deviations from SNR
-noise_std_ImagePix = mu_ImagePix / (10^(SNR_dB / 20));
-noise_std_Disparity = mu_Disparity / (10^(SNR_dB / 20));
+isNoisy = true; % Sets whether the generated measurements should be noisy
+noise_std_ImagePix = 1 * isNoisy; % Pixels are increased by integers
+noise_std_Disparity = 0.3 * isNoisy; % 
 
+% Create noisy measurements
 createMeasurements;
 
 % Initiliaze x_op and A,b and G
